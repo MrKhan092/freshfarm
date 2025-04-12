@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>  
+
+<!-- <h3>All Products</h3> -->
+
+<div id="filters">
+    <div class="filter">
+        
+    </div>
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-4">
+    <% for(let listing of allListings) { %>
+        <div class="card col listing-card">
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+                <img src="<%= listing.image %>" class="card-img-top" alt="Listing_image" style="height: 20rem;">
+                <div class="card-img-overlay"></div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <b><%= listing.productName %></b> <br>
+                        &#8377;<%= Number(listing.price).toLocaleString("en-IN") %> per kg
+                    </p>
+                </div>
+            </a>
+        </div>
+    <% } %>
+</div>

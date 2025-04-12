@@ -1,0 +1,96 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <br><br>
+        <h3>Edit Product Details:</h3>
+        <br>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+            <div class="mb-3">
+                <label for="productName" class="form-label">Product Name</label>
+                <input class="form-control" name="listing[productName]" value="<%= listing.productName %>" placeholder="Product Name" type="text" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" required name="listing[description]" placeholder="Enter Description"><%= listing.description %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input class="form-control" name="listing[image]" value="<%= listing.image %>" placeholder="Enter Image URL/link" type="text">
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input class="form-control" name="listing[price]" value="<%= listing.price %>" placeholder="Enter Price" type="number" required>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-7">
+                    <label for="state" class="form-label">State</label>
+                    <select class="form-select" id="stateSelect" name="listing[state]" required>
+                        <option value="">Select a State</option>
+                        <% 
+                            const states = ["Bihar", "Maharashtra", "Tamil Nadu", "Karnataka", "West Bengal"];
+                            for (let state of states) { 
+                        %>
+                            <option value="<%= state %>" <%= listing.state === state ? "selected" : "" %>><%= state %></option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="mb-3 col-md-5">
+                    <label for="district" class="form-label">District</label>
+                    <select class="form-select" id="districtSelect" name="listing[district]" required>
+                        <option value="<%= listing.district %>"><%= listing.district %></option>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <button class="btn btn-dark">Update</button>
+        </form>
+        <br><br>
+    </div>
+</div>
+
+<script>
+    const districtsByState = {
+        "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Darbhanga"],
+        "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+        "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirapalli"],
+        "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi"],
+        "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"]
+    };
+
+    const stateSelect = document.getElementById("stateSelect");
+    const districtSelect = document.getElementById("districtSelect");
+    const currentDistrict = "<%= listing.district %>";
+
+    function populateDistricts(state) {
+        districtSelect.innerHTML = '<option value="">Select a District</option>';
+        if (districtsByState[state]) {
+            districtsByState[state].forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                if (district === currentDistrict) {
+                    option.selected = true;
+                }
+                districtSelect.appendChild(option);
+            });
+        }
+    }
+
+    stateSelect.addEventListener("change", function () {
+        populateDistricts(this.value);
+    });
+
+    // Pre-populate on page load
+    window.addEventListener("DOMContentLoaded", () => {
+        if (stateSelect.value) {
+            populateDistricts(stateSelect.value);
+        }
+    });
+</script>

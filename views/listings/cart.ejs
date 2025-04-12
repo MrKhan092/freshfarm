@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate') %>
+
+<main>
+    <section class="cart-section">
+        <h1>Shopping Cart</h1>
+        <div class="cart-container">
+            <div class="cart-items">
+                <% if (cart && cart.length > 0) { %>
+                    <% cart.forEach(item => { %>
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <img src="<%= item.image %>" class="img-fluid rounded-start" alt="<%= item.productName %>">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><%= item.productName %></h5>
+                                        <p class="card-text">₹<%= item.price %> per kg</p>
+                                        <p class="card-text">Quantity: <%= item.quantity %></p>
+                                        <p class="card-text">Subtotal: ₹<%= item.price * item.quantity %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-cart">
+                        <i class="fa-solid fa-cart-shopping fa-3x mb-3"></i>
+                        <p>Your cart is empty</p>
+                        <a href="/listings" class="btn btn-success">Continue Shopping</a>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="cart-summary">
+                <h3>Order Summary</h3>
+                <% 
+                    let subtotal = 0;
+                    if (cart) {
+                        cart.forEach(item => {
+                            subtotal += item.price * item.quantity;
+                        });
+                    }
+                %>
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span>₹<%= subtotal.toFixed(2) %></span>
+                </div>
+                <div class="summary-item">
+                    <span>Shipping</span>
+                    <span>₹0.00</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total</span>
+                    <span>₹<%= subtotal.toFixed(2) %></span>
+                </div>
+                <button class="checkout-btn" <%= cart && cart.length > 0 ? '' : 'disabled' %>>Proceed to Checkout</button>
+            </div>
+        </div>
+    </section>
+</main>

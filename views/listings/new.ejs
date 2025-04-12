@@ -1,0 +1,82 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <br><br>
+        <h3>Add a new Product:</h3>
+        <br>
+        <form method="POST" action="/listings" novalidate class="needs-validation">
+            <div class="mb-3">
+                <label for="productName" class="form-label">Product Name</label>
+                <input class="form-control" name="listing[productName]" placeholder="Product Name" type="text" required>
+                <div class="valid-feedback">Looks good</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" required name="listing[description]" placeholder="Enter Description"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input class="form-control" name="listing[image]" placeholder="Enter Image URL/link" type="text">
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input class="form-control" name="listing[price]" placeholder="Enter Price" type="number" required>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-7">
+                    <label for="state" class="form-label">State</label>
+                    <select class="form-select" id="stateSelect" name="listing[state]" required>
+                        <option value="">Select a State</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="West Bengal">West Bengal</option>
+                    </select>
+                </div>
+
+                <div class="mb-3 col-md-5">
+                    <label for="district" class="form-label">District</label>
+                    <select class="form-select" id="districtSelect" name="listing[district]" required>
+                        <option value="">Select a District</option>
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <button class="btn btn-dark add-btn">Add</button>
+        </form>
+        <br><br>
+    </div>
+</div>
+
+<script>
+    const districtsByState = {
+        "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Darbhanga"],
+        "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+        "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirapalli"],
+        "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru", "Belagavi"],
+        "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"]
+    };
+
+    const stateSelect = document.getElementById("stateSelect");
+    const districtSelect = document.getElementById("districtSelect");
+
+    stateSelect.addEventListener("change", function () {
+        const selectedState = stateSelect.value;
+        districtSelect.innerHTML = '<option value="">Select a District</option>';
+        if (districtsByState[selectedState]) {
+            districtsByState[selectedState].forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        }
+    });
+</script>
