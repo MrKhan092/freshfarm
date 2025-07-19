@@ -416,7 +416,14 @@ footer {
 /* .supervisor-card{
     margin: 0 auto;
 } */
+ .team-grid img{
+    border-radius: 50%;
+ }
+ .team img{
+    border-radius: 50%;
+ }
 .team-grid {
+
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
